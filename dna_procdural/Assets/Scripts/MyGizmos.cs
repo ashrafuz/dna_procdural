@@ -9,6 +9,10 @@ public class BezierPoint {
     public Vector3 LocalToWorld( Vector3 localSpace){
         return this.position + rotation * localSpace;
     }
+
+    public Vector3 LocalToWorldNormal( Vector3 localSpace){
+        return  rotation * localSpace;
+    }
 }
 
 public static class Maths {
@@ -19,10 +23,18 @@ public static class Maths {
     }
 
     public static BezierPoint GetBezierPointAlongPath (float _t, Transform[] _points) {
-        Vector3 p0 = _points[0].position;
-        Vector3 p1 = _points[1].position;
-        Vector3 p2 = _points[2].position;
-        Vector3 p3 = _points[3].position;
+        return Maths.GetBezierPointAlongPath(_t, new Vector3[]{
+            _points[0].position,
+            _points[1].position,
+            _points[2].position,
+            _points[3].position });
+    }
+
+    public static BezierPoint GetBezierPointAlongPath (float _t, Vector3[] _points) {
+        Vector3 p0 = _points[0];
+        Vector3 p1 = _points[1];
+        Vector3 p2 = _points[2];
+        Vector3 p3 = _points[3];
 
         Vector3 a = Vector3.Lerp (p0, p1, _t);
         Vector3 b = Vector3.Lerp (p1, p2, _t);
@@ -37,6 +49,16 @@ public static class Maths {
         bp.position = f;
         bp.rotation = Quaternion.LookRotation(e-d);
         return bp;
+    }
+
+    public static BezierPoint GetBezierPointAlongPath (float _t, Vector3 _start, Vector3 _end, float _offset) {
+        Vector3 _tanA = Vector3.Lerp(_start, _end, 0.3f);
+        Vector3 _tanB = Vector3.Lerp(_start, _end, 0.6f);
+
+        _tanA = _tanA + ( Vector3.right * _offset); // offset along x
+        _tanB = _tanB + ( Vector3.right * _offset);// offset along x
+
+        return Maths.GetBezierPointAlongPath(_t, new Vector3[] {_start, _tanA, _tanB,_end});
     }
 
 }

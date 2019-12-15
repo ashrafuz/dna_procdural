@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+
 public class CurvedCylinder : MonoBehaviour {
     [SerializeField] private Transform[] m_ControlPoints = new Transform[4];
     [SerializeField][Range (0, 1)] float m_SliderTest = 0;
@@ -10,6 +12,7 @@ public class CurvedCylinder : MonoBehaviour {
 
     [SerializeField][Range (4, 128)] int m_MeshDetailLevel = 4;
     [SerializeField][Range (4, 128)] float m_FaceDetailLevel = 4;
+    [SerializeField] DataAsset m_Data;
 
     Vector3 GetPos (int i) => m_ControlPoints[i].position;
     private Mesh mMesh;
@@ -28,72 +31,66 @@ public class CurvedCylinder : MonoBehaviour {
     private void GenerateMesh () {
         mMesh.Clear ();
         List<Vector3> vertexList = new List<Vector3> ();
+        List<Vector3> normalList = new List<Vector3> ();
         List<int> triangleIndices = new List<int> ();
 
-        for (int ring = 0; ring < m_MeshDetailLevel + 1; ring++) {
-            float pathPercent = ring / (float) m_MeshDetailLevel;
-            BezierPoint rootPoint = Maths.GetBezierPointAlongPath (pathPercent, m_ControlPoints);
+        Gizmos.color = Color.green;
 
-            for (int i = 0; i < m_FaceDetailLevel + 1; i++) {
-                float t = i / (float) m_FaceDetailLevel;
-                float angleInRad = Maths.TAU * t;
+        BezierPoint bp = Maths.GetBezierPointAlongPath (m_MeshSliderTest, m_ControlPoints);
+        //Vector3[] worldVerts = m_Data.vertices.Select (v => bp.LocalToWorld (v.points)).ToArray ();
 
-                Vector3 dir = Vector3.one;
-                dir.x = Mathf.Cos (angleInRad);
-                dir.y = Mathf.Sin (angleInRad);
+        for (int ring = 0; ring < m_MeshDetailLevel; ring++) {
+            float t = ring / (m_MeshDetailLevel - 1f);
+            BezierPoint bpPath = Maths.GetBezierPointAlongPath (t,
+                m_ControlPoints[0].position, //start
+                bp.position, //end
+                4.5f // offset
+            );
 
-                Vector3 pos = rootPoint.LocalToWorld (m_Radius * dir);
-                Gizmos.DrawWireSphere (pos, 0.1f);
-
-                vertexList.Add (pos);
-                vertexList.Add (rootPoint.position);
+            for (int i = 0; i < m_Data.vertices.Length; i++) {
+                vertexList.Add (bpPath.LocalToWorld (m_Data.vertices[i].points));
+                Gizmos.DrawSphere (vertexList[vertexList.Count - 1], 0.1f);
+                normalList.Add (bpPath.LocalToWorldNormal (m_Data.vertices[i].normals));
             }
         }
 
-        // for (int ring = 0; ring < m_MeshDetailLevel; ring++) {
-        //     int rootIndexCurr = ring * m_MeshDetailLevel;
+        //trianlges
+        for (int ring = 0; ring < m_MeshDetailLevel - 1; ring++) {
+            int rootIndex = ring * m_Data.vertices.Length;
+            int rootIndexNext = (ring + 1) * m_Data.vertices.Length;
 
-        // }
+            for (int line = 0; line < m_Data.lineIndices.Length; line += 2) {
+                int line0 = m_Data.lineIndices[line];
+                int line1 = m_Data.lineIndices[line + 1];
 
-        for (int i = 0; i < 1; i++) {
-            int rATopRight = (i * 2);
-            int rABotRight = rATopRight + 1;
-            int rABotLeft = rATopRight + 2;
-            int rATopLeft = rATopRight + 3;
+                int currentA = rootIndex + line0;
+                int currentB = rootIndex + line1;
 
-            int rBTopRight = rATopRight + m_MeshDetailLevel;
-            int rBBotRight = rBTopRight + 1;
-            int rBBotLeft = rBTopRight + 2;
-            int rBTopLeft = rBTopRight + 3;
+                int nextA = rootIndexNext + line0;
+                int nextB = rootIndexNext + line1;
 
-            // //face a
-            // triangleIndices.Add (rootIndexA);
-            // triangleIndices.Add (rootBotIndexA);
-            // triangleIndices.Add (rootBotNextIndexA);
+                triangleIndices.Add (currentA);
+                triangleIndices.Add (nextB);
+                triangleIndices.Add (nextA);
 
-            // //face b
-            // triangleIndices.Add (rootBotNextIndexA);
-            // triangleIndices.Add (rootTopNextIndexA);
-            // triangleIndices.Add (rootIndexA);
-
-            //TOP
-            triangleIndices.Add (rBTopLeft);
-            triangleIndices.Add (rATopLeft);
-            triangleIndices.Add (rATopRight);
-
-            Debug.Log (rBTopLeft + ", " + rATopLeft + ", " + rATopRight);
-
-            triangleIndices.Add (rATopRight);
-            triangleIndices.Add (rBTopRight);
-            triangleIndices.Add (rBTopLeft);
-
-            Debug.Log (rATopRight + ", " + rBTopLeft + ", " + rBTopRight);
+                triangleIndices.Add (nextB);
+                triangleIndices.Add (currentA);
+                triangleIndices.Add (currentB);
+            }
         }
+
+        // for (int i = 0; i < m_Data.lineIndices.Length; i += 2) {
+        //     Vector3 a = worldVerts[m_Data.lineIndices[i]];
+        //     Vector3 b = worldVerts[m_Data.lineIndices[i + 1]];
+
+        //     Gizmos.DrawLine (a, b);
+        // }
 
         mMesh.SetVertices (vertexList);
         mMesh.SetTriangles (triangleIndices, 0);
+        mMesh.SetNormals (normalList);
 
-        mMesh.RecalculateNormals ();
+        //mMesh.RecalculateNormals ();
     }
 
     private void OnDrawGizmosSelected () {
@@ -102,12 +99,12 @@ public class CurvedCylinder : MonoBehaviour {
     }
 
     private void OnDrawGizmos () {
-        Handles.DrawBezier (
-            GetPos (0),
-            GetPos (3),
-            GetPos (1),
-            GetPos (2),
-            Color.white, EditorGUIUtility.whiteTexture, 2);
+        // Handles.DrawBezier (
+        //     GetPos (0),
+        //     GetPos (3),
+        //     GetPos (1),
+        //     GetPos (2),
+        //     Color.white, EditorGUIUtility.whiteTexture, 2);
 
         BezierPoint bpAlongPath = Maths.GetBezierPointAlongPath (m_SliderTest, m_ControlPoints);
 
