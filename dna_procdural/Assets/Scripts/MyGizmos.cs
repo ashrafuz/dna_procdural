@@ -2,11 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class BezierPoint {
+    public Vector3 position;
+    public Quaternion rotation;
+
+    public Vector3 LocalToWorld( Vector3 localSpace){
+        return this.position + rotation * localSpace;
+    }
+}
+
 public static class Maths {
     public const float TAU = 6.283185f;
 
     public static Vector2 GetUnitVectorByAngle (float _angRad) {
         return new Vector2 (Mathf.Cos (_angRad), Mathf.Sin (_angRad));
+    }
+
+    public static BezierPoint GetBezierPointAlongPath (float _t, Transform[] _points) {
+        Vector3 p0 = _points[0].position;
+        Vector3 p1 = _points[1].position;
+        Vector3 p2 = _points[2].position;
+        Vector3 p3 = _points[3].position;
+
+        Vector3 a = Vector3.Lerp (p0, p1, _t);
+        Vector3 b = Vector3.Lerp (p1, p2, _t);
+        Vector3 c = Vector3.Lerp (p2, p3, _t);
+
+        Vector3 d = Vector3.Lerp (a, b, _t);
+        Vector3 e = Vector3.Lerp (b, c, _t);
+
+        Vector3 f = Vector3.Lerp (d, e, _t);
+
+        BezierPoint bp = new BezierPoint ();
+        bp.position = f;
+        bp.rotation = Quaternion.LookRotation(e-d);
+        return bp;
     }
 
 }
