@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fa3167b1b721e49bbabee8b6ac6f39, type: 3}
+  m_Name: CircularData
+  m_EditorClassIdentifier: 
+  vertices:
+  - points: {x: 2, y: 0}
+    normals: {x: 1, y: 0}
+    onlyUs: 0
+  - points: {x: 2, y: 0}
+    normals: {x: 1, y: 0}
+    onlyUs: 0
+  - points: {x: 1.8477591, y: 0.76536685}
+    normals: {x: 0.92387956, y: 0.38268343}
+    onlyUs: 0
+  - points: {x: 1.8477591, y: 0.76536685}
+    normals: {x: 0.92387956, y: 0.38268343}
+    onlyUs: 0
+  - points: {x: 1.4142137, y: 1.4142135}
+    normals: {x: 0.7071068, y: 0.70710677}
+    onlyUs: 0
+  - points: {x: 1.4142137, y: 1.4142135}
+    normals: {x: 0.7071068, y: 0.70710677}
+    onlyUs: 0
+  - points: {x: 0.76536685, y: 1.847759}
+    normals: {x: 0.38268343, y: 0.9238795}
+    onlyUs: 0
+  - points: {x: 0.76536685, y: 1.847759}
+    normals: {x: 0.38268343, y: 0.9238795}
+    onlyUs: 0
+  - points: {x: 0.0000001509958, y: 2}
+    normals: {x: 0.0000000754979, y: 1}
+    onlyUs: 0
+  - points: {x: 0.0000001509958, y: 2}
+    normals: {x: 0.0000000754979, y: 1}
+    onlyUs: 0
+  - points: {x: -0.76536655, y: 1.8477591}
+    normals: {x: -0.3826833, y: 0.9238796}
+    onlyUs: 0
+  - points: {x: -0.76536655, y: 1.8477591}
+    normals: {x: -0.3826833, y: 0.9238796}
+    onlyUs: 0
+  - points: {x: -1.4142135, y: 1.4142135}
+    normals: {x: -0.70710677, y: 0.70710677}
+    onlyUs: 0
+  - points: {x: -1.4142135, y: 1.4142135}
+    normals: {x: -0.70710677, y: 0.70710677}
+    onlyUs: 0
+  - points: {x: -1.847759, y: 0.765367}
+    normals: {x: -0.9238795, y: 0.3826835}
+    onlyUs: 0
+  - points: {x: -1.847759, y: 0.765367}
+    normals: {x: -0.9238795, y: 0.3826835}
+    onlyUs: 0
+  - points: {x: -2, y: 0.0000003019916}
+    normals: {x: -1, y: 0.0000001509958}
+    onlyUs: 0
+  - points: {x: -2, y: 0.0000003019916}
+    normals: {x: -1, y: 0.0000001509958}
+    onlyUs: 0
+  - points: {x: -1.8477592, y: -0.76536644}
+    normals: {x: -0.9238796, y: -0.38268322}
+    onlyUs: 0
+  - points: {x: -1.8477592, y: -0.76536644}
+    normals: {x: -0.9238796, y: -0.38268322}
+    onlyUs: 0
+  - points: {x: -1.414214, y: -1.4142132}
+    normals: {x: -0.707107, y: -0.7071066}
+    onlyUs: 0
+  - points: {x: -1.414214, y: -1.4142132}
+    normals: {x: -0.707107, y: -0.7071066}
+    onlyUs: 0
+  - points: {x: -0.76536715, y: -1.847759}
+    normals: {x: -0.38268358, y: -0.9238795}
+    onlyUs: 0
+  - points: {x: -0.76536715, y: -1.847759}
+    normals: {x: -0.38268358, y: -0.9238795}
+    onlyUs: 0
+  - points: {x: 0.000000023849761, y: -2}
+    normals: {x: 0.000000011924881, y: -1}
+    onlyUs: 0
+  - points: {x: 0.000000023849761, y: -2}
+    normals: {x: 0.000000011924881, y: -1}
+    onlyUs: 0
+  - points: {x: 0.7653663, y: -1.8477592}
+    normals: {x: 0.38268316, y: -0.9238796}
+    onlyUs: 0
+  - points: {x: 0.7653663, y: -1.8477592}
+    normals: {x: 0.38268316, y: -0.9238796}
+    onlyUs: 0
+  - points: {x: 1.4142133, y: -1.4142138}
+    normals: {x: 0.70710665, y: -0.7071069}
+    onlyUs: 0
+  - points: {x: 1.4142133, y: -1.4142138}
+    normals: {x: 0.70710665, y: -0.7071069}
+    onlyUs: 0
+  - points: {x: 1.8477588, y: -0.76536775}
+    normals: {x: 0.9238794, y: -0.38268387}
+    onlyUs: 0
+  - points: {x: 1.8477588, y: -0.76536775}
+    normals: {x: 0.9238794, y: -0.38268387}
+    onlyUs: 0
+  lineIndices: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e0000001f00000000000000

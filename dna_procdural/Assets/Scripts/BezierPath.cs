@@ -26,5 +26,5 @@ public class BezierPath : MonoBehaviour {
         Gizmos.DrawWireSphere (bpAlongPath.LocalToWorld(Vector3.right * 2), 0.2f);
         Gizmos.DrawWireSphere (bpAlongPath.LocalToWorld(Vector3.right * -2), 0.2f);
     }
-
+     
 }

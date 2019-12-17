@@ -51,6 +51,10 @@ public static class Maths {
         return bp;
     }
 
+    public static BezierPoint GetBezierPointAlongPath (float _t, Vector3 _start, Vector3 _end, Vector3 _tanA, Vector3 _tanB) {
+        return Maths.GetBezierPointAlongPath(_t, new Vector3[] {_start, _tanA, _tanB,_end});
+    }
+
     public static BezierPoint GetBezierPointAlongPath (float _t, Vector3 _start, Vector3 _end, float _offset) {
         Vector3 _tanA = Vector3.Lerp(_start, _end, 0.3f);
         Vector3 _tanB = Vector3.Lerp(_start, _end, 0.6f);
