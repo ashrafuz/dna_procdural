@@ -24,7 +24,7 @@ public class CurvedCylinder : MonoBehaviour {
         mMesh = new Mesh ();
         mMesh.name = "Cylinder Quad";
         GetComponent<MeshFilter> ().sharedMesh = mMesh;
-        
+
         if (!File.Exists ("Assets/CircularData.asset")) {
             m_CircleData = ScriptableObject.CreateInstance<DataAsset> ();
 
@@ -41,11 +41,17 @@ public class CurvedCylinder : MonoBehaviour {
                 //2 because of hard edge
                 vertices.Add (currentPoint);
 
-                Vertex nextPoint = new Vertex ();
-                nextPoint.points = currentPoint.points;
-                nextPoint.normals = new Vector2 (Mathf.Cos (angleInRad + (Maths.TAU / 4)), Mathf.Sin (angleInRad + (Maths.TAU / 4)));
+                Vertex oppPoint = new Vertex ();
+                oppPoint.points = currentPoint.points;
+                oppPoint.normals = -currentPoint.normals;
 
-                vertices.Add (currentPoint);
+                vertices.Add (oppPoint);
+
+                // Vertex nextPoint = new Vertex ();
+                // nextPoint.points = currentPoint.points;
+                // nextPoint.normals = new Vector2 (Mathf.Cos (angleInRad + (Maths.TAU / 4)), Mathf.Sin (angleInRad + (Maths.TAU / 4)));
+
+                // vertices.Add (currentPoint);
             }
 
             List<int> lineIndices = new List<int> ();
@@ -58,7 +64,7 @@ public class CurvedCylinder : MonoBehaviour {
 
             AssetDatabase.CreateAsset (m_CircleData, "Assets/CircularData.asset");
         } else {
-            m_CircleData = AssetDatabase.LoadAssetAtPath<DataAsset>("Assets/CircularData.asset");
+            m_CircleData = AssetDatabase.LoadAssetAtPath<DataAsset> ("Assets/CircularData.asset");
         }
     }
 
@@ -111,6 +117,15 @@ public class CurvedCylinder : MonoBehaviour {
                 triangleIndices.Add (nextB);
                 triangleIndices.Add (currentA);
                 triangleIndices.Add (currentB);
+
+                //opposite face
+                triangleIndices.Add (currentA);
+                triangleIndices.Add (nextA);
+                triangleIndices.Add (nextB);
+
+                triangleIndices.Add (nextB);
+                triangleIndices.Add (currentB);
+                triangleIndices.Add (currentA);
             }
         }
 
@@ -125,7 +140,7 @@ public class CurvedCylinder : MonoBehaviour {
         mMesh.SetTriangles (triangleIndices, 0);
         mMesh.SetNormals (normalList);
 
-        mMesh.RecalculateNormals ();
+        //mMesh.RecalculateNormals ();
     }
 
     private void OnDrawGizmosSelected () {
