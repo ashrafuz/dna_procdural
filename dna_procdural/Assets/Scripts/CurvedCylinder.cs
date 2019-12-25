@@ -88,6 +88,14 @@ public class CurvedCylinder : MonoBehaviour {
                 Vector3.Lerp (bp.position, m_ControlPoints[2].position, t)
             );
 
+            // BezierPoint bpPath = Maths.GetBezierPointAlongPath (t,
+            //     m_ControlPoints[0].position, //start
+            //     //bp.position,
+            //     m_ControlPoints[3].position, //end
+            //     Vector3.Lerp (m_ControlPoints[0].position, m_ControlPoints[1].position, t),
+            //     Vector3.Lerp (m_ControlPoints[1].position, m_ControlPoints[2].position, t)
+            // );
+
             for (int i = 0; i < _useData.vertices.Length; i++) {
                 vertexList.Add (bpPath.LocalToWorld (_useData.vertices[i].points));
                 Gizmos.DrawSphere (vertexList[vertexList.Count - 1], 0.1f);
